@@ -12,8 +12,8 @@ import RxCocoa
 class HomeViewModel: BaseViewModel {
     enum LoadingType {
         case none
-        case newText
-        case nextPage
+        case getNew
+        case loadMore
     }
     
     private let homeService = HomeService()
@@ -35,16 +35,20 @@ class HomeViewModel: BaseViewModel {
     var loadingType = BehaviorRelay<LoadingType>(value: .none)
     var isLoading: Bool { return loadingType.value != .none }
     
+    private var currentSearchText = ""
+    
     // Load more
-    private var currentPage = 0 // page Start from 1
-    private var totalPageCount = 1
+    private var currentPage = 1 // page Start from 1
+    private var totalResult = 1
     
     var hasMorePages: Bool {
-        return currentPage < totalPageCount
+        return listMovie.value.count < totalResult
     }
     
     var nextPage: Int {
-        guard hasMorePages else { return currentPage }
+        guard hasMorePages else {
+            return currentPage
+        }
         currentPage += 1
         return currentPage
     }
@@ -57,48 +61,43 @@ class HomeViewModel: BaseViewModel {
         input.searchText
             .drive(onNext: { [weak self] (searchText) in
                 guard let self = self else {return}
-                self.loadMovies(searchText: searchText, loadingType: .newText)
-            })
-            .disposed(by: disposeBag)
+                self.currentSearchText = searchText
+                self.resetPages()
+                self.loadMovies(searchText: searchText, loadingType: .getNew)
+            }).disposed(by: disposeBag)
+        
+        input.doLoadMore.drive(onNext: { [weak self] (shouldLoadMore) in
+            guard let self = self, shouldLoadMore else {return}
+            self.loadMovies(searchText: self.currentSearchText, loadingType: .loadMore)
+        }).disposed(by: disposeBag)
         return Output(listMovie: listMovie.asObservable())
     }
     
     func loadMovies(searchText: String, loadingType: LoadingType) {
-        let request = GetListMovieRequest(searchQuery: searchText, type: "movie", page: nextPage)
+        if loadingType == .loadMore, !hasMorePages {
+            return
+        }
+        
+        let request = GetListMovieRequest(searchQuery: searchText, type: "movie", page: loadingType == .getNew ? 1 : nextPage)
         homeService.getMovieList(request: request, success: { [weak self] result in
             guard let self = self else { return }
-            self.setListMovieValue(result)
+            self.setListMovieValue(result, loadingType: loadingType)
         })
     }
     
     private func resetPages() {
-        currentPage = 0
-        totalPageCount = 1
-        listMovie.accept([])
+        currentPage = 1
+        totalResult = 1
     }
-    
-    // Search new
-    func updateQuery(searchText: String) {
-        resetPages()
-        loadMovies(searchText: searchText, loadingType: .newText)
-    }
-    
-    // Load next page
-    func loadNextPage() {
-        guard hasMorePages, !isLoading else {
-            return
-        }
-        //        loadMovies(searchText: searchText.value, loadingType: .nextPage)
-    }
-    
-    private func setListMovieValue(_ movieResult: MoviesResult) {
+            
+    private func setListMovieValue(_ movieResult: MoviesResult, loadingType: LoadingType) {
         guard let movies = movieResult.data, movies.count > 0 else {
             return
         }
-        if let totalPage = Int(movieResult.totalResults ?? "") {
-            self.totalPageCount = totalPage
+        if let totalResult = Int(movieResult.totalResults ?? "") {
+            self.totalResult = totalResult
         }
         
-        self.listMovie.accept(listMovie.value + movies)
+        self.listMovie.accept(loadingType == .getNew ? movies : listMovie.value + movies)
     }
 }

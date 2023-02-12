@@ -13,10 +13,11 @@ class HomeViewController: BaseViewController {
     private let disposeBag = DisposeBag()
 
     @IBOutlet weak var searchTextField: UITextField!
-    private var searchText = BehaviorRelay<String>(value: "Dragon Ball")
+    private var searchText = BehaviorRelay<String>(value: "Dragon Ball") // for initial value
     private var triggerLoadMore = BehaviorRelay<Bool>(value: false)
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
+    
     
     private lazy var viewModel = HomeViewModel(navigator: .init(self.navigationController))
     override func viewDidLoad() {
@@ -30,8 +31,6 @@ class HomeViewController: BaseViewController {
         searchTextField.rx.controlEvent(.editingDidEndOnExit)
             .bind { [weak self] (event) in
                 guard let self = self, let text = self.searchTextField.text else {return}
-                
-                self.showLoading()
                 self.searchText.accept(text)
             }
             .disposed(by: disposeBag)
@@ -49,11 +48,20 @@ class HomeViewController: BaseViewController {
     private func configGUI() {
         collectionView.register(UINib(nibName: "MovieItemCell", bundle: nil), forCellWithReuseIdentifier: "MovieItemCell")
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)
-
+        
+        collectionView.rx.willDisplayCell
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (cell, indexPath) in
+                if indexPath.row == self.collectionView.numberOfItems(inSection: 0) - 1 { // scroll to last row
+                    self.triggerLoadMore.accept(true)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             let totalSpace = flowLayout.sectionInset.left
-                + flowLayout.sectionInset.right
-                + (flowLayout.minimumInteritemSpacing * CGFloat(2))
+            + flowLayout.sectionInset.right
+            + (flowLayout.minimumInteritemSpacing * CGFloat(2))
             let expectItemSize: CGFloat = (UIScreen.main.bounds.width - 48 - totalSpace)/2
             flowLayout.itemSize = CGSize(width: expectItemSize, height: expectItemSize * 4/3)
         }

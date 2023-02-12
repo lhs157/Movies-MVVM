@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import SVProgressHUD
 
 enum StatusCode: Int {
     case success = 200
@@ -30,15 +31,14 @@ enum Result<T, Failure> where Failure: Error {
 class APIRequest {
     
     public static func request<T: Decodable> (_ urlConvertible: URLRequestConvertible, success: @escaping (T) -> Void, failed: (() -> Void)? = nil) {
+        SVProgressHUD.show()
         AF.request(urlConvertible).responseJSON { response in
-            //Check the result from Alamofire's response and check if it's a success or a failure
-                
+            SVProgressHUD.dismiss()
             guard let res = response.response else {
                 failed?()
                 failure("Response not found!")
                 return
             }
-            
             
             let url = res.url?.absoluteString ?? ""
             let method = response.request?.httpMethod ?? ""
