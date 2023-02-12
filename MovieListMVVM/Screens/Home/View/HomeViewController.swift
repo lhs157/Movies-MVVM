@@ -34,7 +34,6 @@ class HomeViewController: BaseViewController {
                 self.searchText.accept(text)
             }
             .disposed(by: disposeBag)
-
     }
     
     private func bindViewModel() {
@@ -69,6 +68,9 @@ class HomeViewController: BaseViewController {
         
     @IBAction func searchTapped(_ sender: Any) {
         view.endEditing(true)
+        if let text = searchTextField.text {
+            self.searchText.accept(text)
+        }
     }
 }
 
