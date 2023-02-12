@@ -1,4 +1,4 @@
-This is a very basic project using MVVM Architecture pattern with RXSwift for data binding from OMDB
+This is a very basic project using MVVM Architecture pattern with RXSwift for data binding from OMDB. 
 Users can enter the movie title on top to search for movie data from OMDB.
 
 Pod libraries are already included. So you can run the project directly without configurations.
