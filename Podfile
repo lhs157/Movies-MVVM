@@ -11,4 +11,5 @@ target 'MovieListMVVM' do
   pod 'RxCocoa'
   pod 'IQKeyboardManagerSwift'
   pod 'SVProgressHUD'
+  pod 'Kingfisher'
 end

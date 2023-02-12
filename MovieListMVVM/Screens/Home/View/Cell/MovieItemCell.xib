@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Gwy-44-s8p" customClass="MovieItemCell" customModule="MovieListMVVM" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="178" height="230"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="XoN-Hr-kHX">
+                <rect key="frame" x="0.0" y="0.0" width="178" height="230"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PuW-0y-i5x">
+                        <rect key="frame" x="0.0" y="0.0" width="178" height="230"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qve-Jt-YuU">
+                        <rect key="frame" x="0.0" y="230" width="178" height="0.0"/>
+                        <color key="backgroundColor" white="0.33000000000000002" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidthView">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusView">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColorView">
+                                <color key="value" red="0.63921568630000003" green="0.63921568630000003" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="qve-Jt-YuU" secondAttribute="bottom" id="8kX-HI-3um"/>
+                    <constraint firstAttribute="trailing" secondItem="qve-Jt-YuU" secondAttribute="trailing" id="9DL-d4-h1M"/>
+                    <constraint firstAttribute="bottom" secondItem="PuW-0y-i5x" secondAttribute="bottom" id="9F5-Sk-DJC"/>
+                    <constraint firstAttribute="trailing" secondItem="PuW-0y-i5x" secondAttribute="trailing" id="LPR-EA-KRp"/>
+                    <constraint firstItem="qve-Jt-YuU" firstAttribute="leading" secondItem="XoN-Hr-kHX" secondAttribute="leading" id="Znb-BR-gNm"/>
+                    <constraint firstItem="PuW-0y-i5x" firstAttribute="top" secondItem="XoN-Hr-kHX" secondAttribute="top" id="ezY-DT-PE7"/>
+                    <constraint firstItem="PuW-0y-i5x" firstAttribute="leading" secondItem="XoN-Hr-kHX" secondAttribute="leading" id="fEO-1C-CTr"/>
+                </constraints>
+                <userDefinedRuntimeAttributes>
+                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusView">
+                        <real key="value" value="8"/>
+                    </userDefinedRuntimeAttribute>
+                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidthView">
+                        <real key="value" value="1"/>
+                    </userDefinedRuntimeAttribute>
+                    <userDefinedRuntimeAttribute type="color" keyPath="borderColorView">
+                        <color key="value" white="0.33000000000000002" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </userDefinedRuntimeAttribute>
+                </userDefinedRuntimeAttributes>
+            </collectionViewCellContentView>
+            <size key="customSize" width="178" height="230"/>
+            <connections>
+                <outlet property="imageView" destination="PuW-0y-i5x" id="eY1-dY-khd"/>
+                <outlet property="nameLabel" destination="qve-Jt-YuU" id="3B0-9P-rda"/>
+            </connections>
+            <point key="canvasLocation" x="-39.694656488549619" y="23.239436619718312"/>
+        </collectionViewCell>
+    </objects>
+</document>

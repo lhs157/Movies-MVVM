@@ -10,9 +10,11 @@ import Foundation
 struct GetListMovieRequest: Codable {
     var searchQuery: String?
     var type: String?
+    var page: Int?
     
     enum CodingKeys: String, CodingKey {
         case searchQuery = "s"
         case type
+        case page
     }
 }
